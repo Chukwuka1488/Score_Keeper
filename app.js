@@ -1,24 +1,25 @@
 // selectors for html elements
 const p1Button = document.querySelector("#p1Button");
 const p2Button = document.querySelector("#p2Button");
-
-const reset = document.querySelector("#reset");
-
+const resetButton = document.querySelector("#reset");
 const p1Display = document.querySelector("#p1Display");
 const p2Display = document.querySelector("#p2Display");
+const winningScoreSelect = document.querySelector("#playTo");
 
+// score evaluators
 let p1Score = 0;
 let p2Score = 0;
-let winningScore = 5;
+let winningScore = 3;
 let isGameOver = false;
 
 // functions
-
 function playerOne(e) {
     if (!isGameOver) {
         p1Score += 1;
         if (p1Score === winningScore) {
             isGameOver = true;
+            p1Display.classList.add("winner");
+            p2Display.classList.add("loser");
         }
     }
     p1Display.textContent = p1Score;
@@ -29,12 +30,31 @@ function playerTwo(e) {
         p2Score += 1;
         if (p2Score === winningScore) {
             isGameOver = true;
+            p2Display.classList.add("winner");
+            p1Display.classList.add("loser");
         }
     }
     p2Display.textContent = p2Score;
 }
 
-// event listeners
+function reset(e) {
+    isGameOver = false;
+    p1Score = 0;
+    p2Score = 0;
+    p1Display.textContent = 0;
+    p2Display.textContent = 0;
+    p1Display.classList.remove("winner", "loser");
+    p2Display.classList.remove("winner", "loser");
+}
 
+function winGame(e) {
+    // alert("CHANGE");
+    winningScore = parseInt(this.value);
+    reset();
+}
+
+// event listeners
 p1Button.addEventListener("click", playerOne);
 p2Button.addEventListener("click", playerTwo);
+resetButton.addEventListener("click", reset);
+winningScoreSelect.addEventListener("change", winGame);
